@@ -1,0 +1,206 @@
+﻿<div class="panel panel-default" style="margin-top: 10px;">
+    <div class="panel-heading">Search local listings by type</div>
+    <div class="panel-body">
+        <select id="type" multiple="multiple" style="width: 350px; display: inline-block; margin-right: 10px;">
+            <option value="accounting">Accounting</option>
+            <option value="airport">Airport</option>
+            <option value="amusement_park">Amusement park</option>
+            <option value="aquarium">Aquarium</option>
+            <option value="art_gallery">Art gallery</option>
+            <option value="atm">ATM</option>
+            <option value="bakery">Bakery</option>
+            <option value="bank">Bank</option>
+            <option value="bar">Bar</option>
+            <option value="beauty_salon">Beauty salon</option>
+            <option value="bicycle_store">Bicycle store</option>
+            <option value="book_store">Book store</option>
+            <option value="bowling_alley">Bowling alley</option>
+            <option value="bus_station">Bus station</option>
+            <option value="cafe">Cafe</option>
+            <option value="campground">Campground</option>
+            <option value="car_dealer">Car dealer</option>
+            <option value="car_rental">Car rental</option>
+            <option value="car_repair">Car repair</option>
+            <option value="car_wash">Car wash</option>
+            <option value="casino">Casino</option>
+            <option value="cemetery">Cemetery</option>
+            <option value="church">Church</option>
+            <option value="city_hall">City hall</option>
+            <option value="clothing_store">Clothing store</option>
+            <option value="convenience_store">Convenience store</option>
+            <option value="courthouse">Courthouse</option>
+            <option value="dentist">Dentist</option>
+            <option value="department_store">Department store</option>
+            <option value="doctor">Doctor</option>
+            <option value="electrician">Electrician</option>
+            <option value="electronics_store">Electronics store</option>
+            <option value="embassy">Embassy</option>
+            <option value="establishment">Establishment</option>
+            <option value="finance">Finance</option>
+            <option value="fire_station">Fire station</option>
+            <option value="florist">Florist</option>
+            <option value="food">Food</option>
+            <option value="funeral_home">Funeral home</option>
+            <option value="furniture_store">Furniture store</option>
+            <option value="gas_station">Gas station</option>
+            <option value="general_contractor">General contractor</option>
+            <option value="grocery_or_supermarket">Grocery or Supermarket</option>
+            <option value="gym">Gym</option>
+            <option value="hair_care">Hair care</option>
+            <option value="hardware_store">Hardware store</option>
+            <option value="health">Health</option>
+            <option value="hindu_temple">Hindu temple</option>
+            <option value="home_goods_store">Home goods store</option>
+            <option value="hospital">Hospital</option>
+            <option value="insurance_agency">Insurance agency</option>
+            <option value="jewelry_store">Jewelry store</option>
+            <option value="laundry">Laundry</option>
+            <option value="lawyer">Lawyer</option>
+            <option value="library">Library</option>
+            <option value="liquor_store">Liquor store</option>
+            <option value="local_government_office">Local government office</option>
+            <option value="locksmith">Locksmith</option>
+            <option value="lodging">Lodging</option>
+            <option value="meal_delivery">Meal delivery</option>
+            <option value="meal_takeaway">Meal takeaway</option>
+            <option value="mosque">Mosque</option>
+            <option value="movie_rental">Movie rental</option>
+            <option value="movie_theater">Movie theater</option>
+            <option value="moving_company">Moving company</option>
+            <option value="museum">Museum</option>
+            <option value="night_club">Night club</option>
+            <option value="painter">Painter</option>
+            <option value="park">Park</option>
+            <option value="parking">Parking</option>
+            <option value="pet_store">Pet store</option>
+            <option value="pharmacy">Pharmacy</option>
+            <option value="physiotherapist">Physiotherapist</option>
+            <option value="place_of_worship">Place of worship</option>
+            <option value="plumber">Plumber</option>
+            <option value="police">Police</option>
+            <option value="post_office">Post office</option>
+            <option value="real_estate_agency">Real estate agency</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="roofing_contractor">Roofing contractor</option>
+            <option value="rv_park">RV park</option>
+            <option value="school">School</option>
+            <option value="shoe_store">Shoe store</option>
+            <option value="shopping_mall">Shopping mall</option>
+            <option value="spa">Spa</option>
+            <option value="stadium">Stadium</option>
+            <option value="storage">Storage</option>
+            <option value="store">Store</option>
+            <option value="subway_station">Subway station</option>
+            <option value="synagogue">Synagogue</option>
+            <option value="taxi_stand">Taxi stand</option>
+            <option value="train_station">Train station</option>
+            <option value="travel_agency">Travel agency</option>
+            <option value="university">University</option>
+            <option value="veterinary_care">Veterinary care</option>
+            <option value="zoo">Zoo</option>
+        </select>
+
+        <button id="search" class="btn btn-primary" onclick="search()">Search</button>
+    </div>
+
+    <table id="listings" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Open</th>
+                <th>Type</th>
+                <th>In vacinity of</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Open</th>
+                <th>Type</th>
+                <th>In vacinity of</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var cachedposition;
+
+        function search(position) {
+            var shouldDestroy = false;
+
+            if (!position) {
+                shouldDestroy = true;
+            }
+
+            if (!cachedposition) {
+                cachedposition = position;
+            }
+
+            var types = $('#type').val();
+            var typesparam = '';
+            if (types) {
+                if (types.length == 1) {
+                    typesparam = types[0];
+                } else if (types.length > 1) {
+                    typesparam = types.join('|');
+                }
+            }
+            $.ajax({
+                    method: 'GET',
+                    url: 'Listings/search',
+                    data: {
+                        latitude: cachedposition.coords.latitude,
+                        longitude: cachedposition.coords.longitude,
+                        type: typesparam
+                    }
+                })
+                .done(function(data) {
+                    $('#listings').dataTable({
+                        'data': JSON.parse(data),
+                        'destroy': shouldDestroy,
+                        'bLengthChange': false,
+                        'columnDefs': [
+                            {
+                                'render': function (data, type, row) {
+                                    return '<img src="' + data + '" alt="icon" style="width: 50px; height: 50px">';
+                                },
+                                'targets': 0
+                            },
+                            { "orderable": false, "targets": 0 },
+                            { "searchable": false, "targets": 0 }
+                        ],
+                        'order': [[1, 'asc']]
+                    });
+                })
+                .fail(function() {
+                    $('#listings').dataTable({
+                        'language': {
+                            'emptyTable': 'There was an error reaching Google Places API.'
+                        },
+                        'bLengthChange': false
+                    });
+                });
+        }
+
+        $(function() {
+            $('#type').select2();
+            if (navigator.geolocation) {
+                cachedposition = navigator.geolocation.getCurrentPosition(search);
+            } else {
+                $('#search').attr('disabled', true);
+                $('#listings').dataTable({
+                    'language': {
+                        'emptyTable': 'Geolocation is not supported by this browser.'
+                    },
+                    'bLengthChange': false
+                });
+            }
+
+        });
+    </script>
+}

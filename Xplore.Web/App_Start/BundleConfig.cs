@@ -19,12 +19,17 @@ namespace Xplore.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/DataTables/jquery.dataTables.js",
+                      "~/Scripts/DataTables/dataTables.bootstrap.js",
+                      "~/Scripts/select2.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/DataTables/css/dataTables.bootstrap.css",
+                      "~/Content/css/select2.css",
                       "~/Content/site.css"));
         }
     }
